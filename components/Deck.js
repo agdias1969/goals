@@ -1,52 +1,74 @@
 import React, { Component } from 'react'
-
+import { connect } from 'react-redux'
 import {
-  StyleSheet,
-  TouchableOpacity,
-  Text,
-  View
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View
 } from 'react-native'
 
-
-export default class Deck extends Component  {
+class Deck extends Component {
+ 
+  
     render() {
-        const { title, cards } = this.props
-        return (
-            <View style={styles.deck}>
-              <TouchableOpacity 
-                
-              >
-                  <Text style={{
-                      textAlign: 'center',
-                      color: 'white',
-                      fontSize: 30,
-                  }}>
-                      {title}
-                  </Text>
-                  <Text style={{
-                      textAlign: 'center',
-                      color: 'white',
-                      fontSize: 20, }}
-                    
-                  >
-                     {`${cards} cards`}
-                  </Text>
+        const { navigation, decks } = this.props
+        const { navigate } = navigation.navigate
+        const title = navigation.getParam('title')
+        
+           
+            return (
+                <View style={{flex:1, alignItems: 'center', justifyContent: 'center'}}>
+                 <Text style={{fontSize: 40}}>{title}</Text>
+                 <Text style={{fontSize: 20}}>{decks[title].questions.length} cards </Text>
+                 <MyButton onPress={() => this.props.navigation.navigate('Card') } text='Add Card' bgColor='white' color='#555' />
+                 <MyButton text='StartQuiz' bgColor='#555' color='#fff' />
+                </View>
+    
+            )
+        
       
-              </TouchableOpacity>
-          </View>
-        )
+       
     }
-   
+}
+function MyButton(props) {
+    return (
+      <View style={{marginTop: 20}} >
+        <TouchableOpacity 
+            onPress={props.onPress}
+            style={{padding: 20,  
+                    
+                    width: 250, 
+                    backgroundColor: props.bgColor , 
+                     
+                    borderRadius: 8 ,
+                    borderWidth: 0.5
+                    
+                    }} 
+         > 
+            <Text style={{textAlign: 'center',fontSize: 20, color: props.color}}>{ props.text }</Text>
+        </TouchableOpacity>
+      </View>
+       
+    )
 }
 
+
 const styles = StyleSheet.create({
-    deck: {
-        
-        width: 315,
-        marginBottom: 20,
-        backgroundColor: '#777',
-        textAlign: 'center',
-        padding: 5
-      
+    container: {
+        flex:1,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    button: {
+        width: '300',
+        padding: 5,
+        borderRadius: 5,
+        backgroundColor: 'white',
     }
 })
+
+const mapStateToProps = (decks) => (decks)
+
+
+
+export default connect(mapStateToProps)(Deck)

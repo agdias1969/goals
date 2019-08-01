@@ -1,19 +1,24 @@
 import React, {Component} from 'react'
 import { AsyncStorage,
          FlatList,
-         StatusBar, 
-         Text, 
+         ListItem,
+         SafeAreaView,
+         StyleSheet,  
+         Text,
+         TouchableOpacity, 
          View } from 'react-native'
 
          
 import { connect } from 'react-redux'
 import  { retrieveDecks, _retriveDecks, _retrieveDecks } from '../assets/actions'
 import NoDeck from './NoDeck'
-import Deck from './Deck'
+import DeckButton from './DeckButton'
 import {
   Entypo,
   MaterialCommunityIcons
 }from '@expo/vector-icons'
+import { ContainerTypes } from 'expo-contacts';
+
 
 
 
@@ -34,7 +39,7 @@ class DeckList  extends Component {
 
   static navigationOptions = ({navigation}) => {
     return {
-      title: 'DeckList',
+      title: 'Deck Pool',
       tabBarIcon: () => <
         MaterialCommunityIcons
           color='gray'
@@ -44,7 +49,7 @@ class DeckList  extends Component {
     }
   }
    
-  
+
   componentDidMount() {
     
     const { dispatch, navigation } = this.props
@@ -57,40 +62,79 @@ class DeckList  extends Component {
     render() {
       
       const { decks } = this.props
-      const deckList = Object.entries(decks)
-      
-      console.log(deckList)
-      
+      const { navigate } = this.props.navigation
+     
     
+     
+      
         return (
           <View style={{flex:1, alignItems: 'center', justifyContent: 'center'}} >
-           <View style={{marginTop: 60}} >
-           <FlatList 
-              data={Object.keys(decks)}
-              renderItem={({item}) => (
-                <Deck  
-                 keyExtractor={item.key}
-                 title={decks[item].title } 
-                 cards={decks[item].questions.length}
-                />
-              )}
-            />
-           </View>
-            
-            
-            
-            
-          
-          
+           
+            <View style={{flex:1}}>
+              <FlatList
+                data={Object.values(decks)}
+                renderItem={({item}) => (
+                  <View>
+                    <TouchableOpacity 
+                    onPress={() => this.props.navigation.navigate('Deck',{
+                      title: item.title
+                      
+                    })}
+                    key={item.title}
+                     style={styles.deck}
+                    >
+                      <Text style={styles.title}>{item.title}</Text>
+                      <Text style={styles.cards}>{item.questions.length} cards</Text>
+                    </TouchableOpacity>
+                  </View>
+                  
+                )}
+              
+              />
+            </View>
+           
+             
+               
+              
+
+              
              
            
-           
-   
+          
+          
           </View>
         )
     }
 }
 
+
+const styles = StyleSheet.create({
+  deck: {
+    
+    maxWidth: '100%',
+    width: 400,
+    borderWidth: 1,
+    borderTopColor: '#f2f2f2',
+    borderLeftColor: '#f2f2f2',
+    borderRightColor: '#737373',
+    borderBottomColor: '#8c8c8c',
+    backgroundColor: '#f7f7f7',
+    marginBottom: 20,
+  },
+  title: {
+    fontSize: 20,
+    color: '#444',
+    textAlign: 'center',
+    padding: 5
+  },
+  cards: {
+    fontSize: 15,
+    color: '#444',
+    textAlign: 'center',
+    padding: 5
+  }
+  
+})
 function mapStateToProps(decks) {
     
    return decks
