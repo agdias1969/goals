@@ -3,16 +3,26 @@ import { AsyncStorage,
          Text,
          View
        } from 'react-native'
-import { parse } from 'qs';
+
+import { addCard } from '../utils/api'
+
 
 
 class Card extends React.Component {
+    state = {
+        item: ''
+    }
+
+
+
+   
+
     render() {
-        const item = fetchItem()
-        console.log('Card',fetchItem())
+        
+        
         return(
-          <View>
-           <Text>Card</Text>
+          <View style={{flex:1, alignItems: 'center', justifyContent: 'center'}}>
+           <Text style={{fontSize: 20}}>Card</Text>
              
         
           </View>
@@ -20,10 +30,7 @@ class Card extends React.Component {
     }
 }
 
-const fetchItem = async() => {
-    const item = await AsyncStorage.getItem('@storage_key')
-    console.log(JSON.parse(item))
-}
+
 //outline
 // recuperar Item do AsyncStorage (getItem)
 // localizar baralho e adicionar questoes ao array

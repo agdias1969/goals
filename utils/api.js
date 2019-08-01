@@ -20,6 +20,14 @@ async function addDeck(deck) {
     }
   }
 
+  export function addCard(deck) {
+    return AsyncStorage.getItem('@storage_key')
+      .then((results) => {
+        const data = JSON.parse(results)
+        console.log(data[deck].title)
+      }).catch((error) => console.log(error.message))
+  }
+
  export function createDeck(title) {
    console.log('TITLE8***', title)
    
